@@ -65,7 +65,7 @@ extension ViewController {
 extension ViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        locationManager.stopUpdatingLocation()
+        manager.stopUpdatingLocation()
         getSunData()
     }
     
