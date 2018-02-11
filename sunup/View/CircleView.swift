@@ -22,7 +22,7 @@ class CircleView: UIView {
             
             let difference = (sun.set).convertToTimeDecimal - (sun.rise).convertToTimeDecimal
             
-            endAngle += difference.angle
+            endAngle = 3 * .pi + difference.angle
         }
     }
     

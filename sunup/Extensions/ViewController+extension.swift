@@ -54,7 +54,7 @@ extension ViewController {
                         }
                     }
                 } catch {
-                    print("error:", error)
+                    print("Error:", error)
                 }
             }
         }.resume()
@@ -64,7 +64,11 @@ extension ViewController {
 // MARK: - CLLocationManagerDelegate
 extension ViewController: CLLocationManagerDelegate {
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) { }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        locationManager.stopUpdatingLocation()
+        getSunData()
+    }
+    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) { }
     
     func buildURL(latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> URL? {
@@ -80,14 +84,6 @@ extension ViewController: CLLocationManagerDelegate {
         components.queryItems = [latitudeQueryItem, longitudeQueryItem, appIDQueryItem]
         
         return components.url
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        switch status {
-        case .notDetermined: manager.requestLocation()
-        case .authorizedAlways, .authorizedWhenInUse: getSunData()
-        default: return
-        }
     }
 }
 

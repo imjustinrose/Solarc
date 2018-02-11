@@ -140,7 +140,7 @@ class ViewController: UIViewController {
     }
     
     @objc private func handleForegroundAppearance() {
-        circleView.start()
+        locationManager.startUpdatingLocation()
     }
     
     // MARK: Lifecycle
