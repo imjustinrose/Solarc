@@ -106,7 +106,7 @@ class ViewController: UIViewController {
 
     lazy var circleView: CircleView = {
         let circleView = CircleView()
-        circleView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.6)
+        circleView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.7)
         circleView.delegate = self
         return circleView
     }()
@@ -115,18 +115,18 @@ class ViewController: UIViewController {
         view.addSubview(placeholderImageView)
         view.addSubview(backgroundImageView)
         view.addSubview(circleView)
-        circleView.addSubview(stackView)
+        view.addSubview(stackView)
         
         placeholderImageView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
         backgroundImageView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
         
         NSLayoutConstraint.activate([
     
-            stackView.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
-            stackView.bottomAnchor.constraint(equalTo: circleView.bottomAnchor, constant: -12),
-            stackView.leadingAnchor.constraint(equalTo: circleView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: circleView.trailingAnchor),
-            stackView.heightAnchor.constraint(equalTo: circleView.heightAnchor, multiplier: 0.2)
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -12),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            stackView.heightAnchor.constraint(equalTo: circleView.heightAnchor, multiplier: 0.15)
         ])
     }
     

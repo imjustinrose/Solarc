@@ -10,6 +10,7 @@ import UIKit
 
 extension Float {
     var angle: Float { return self / 12 * .pi }
+    var radians: Float { return self * (.pi / 180) }
     var hundredths: Float { return self / 60 }
     var cgFloat: CGFloat { return CGFloat(self) }
 }

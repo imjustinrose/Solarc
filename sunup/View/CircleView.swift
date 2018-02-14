@@ -31,7 +31,7 @@ class CircleView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isUserInteractionEnabled = true
-        label.font = UIFont.systemFont(ofSize: 36)
+        label.font = UIFont.systemFont(ofSize: 32)
         label.textColor = UIColor.white.withAlphaComponent(0.5)
         label.text = dateFormatter.string(from: Date())
         label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTimeTapped)))
@@ -81,14 +81,14 @@ class CircleView: UIView {
     
     /// The view that covers up `startAngle` location
     private var sunriseImageView: UIImageView = {
-        let imageView = UIImageView(image: #imageLiteral(resourceName: "sunrise_cloud"))
+        let imageView = UIImageView(image: #imageLiteral(resourceName: "sunrise_cloud_outline"))
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
     /// The view that covers up `endAngle` location
     var sunsetImageView: UIImageView = {
-        let imageView = UIImageView(image: #imageLiteral(resourceName: "sunset_cloud"))
+        let imageView = UIImageView(image: #imageLiteral(resourceName: "sunset_cloud_outline"))
         imageView.alpha = 0
         imageView.contentMode = .scaleAspectFit
         return imageView
@@ -100,9 +100,24 @@ class CircleView: UIView {
         
         let rise = sun.rise.convertToTimeDecimal.angle
         let set = Date().current.convertToTimeDecimal.angle
-        let difference = startAngle + (set - rise)
+        endAngle = startAngle + (set - rise)
         
-        let moveableViewPath = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle.cgFloat, endAngle: difference.cgFloat, clockwise: true).cgPath
+        
+        let moveableViewPath = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle.cgFloat, endAngle: endAngle.cgFloat, clockwise: true).cgPath
+        let pathAnimation = CAKeyframeAnimation(keyPath: Constants.CAKeyframeAnimation.positionKeyPath)
+        
+        pathAnimation.delegate = self
+        pathAnimation.calculationMode = kCAAnimationPaced
+        pathAnimation.duration = duration
+        pathAnimation.path = moveableViewPath
+        pathAnimation.fillMode = kCAFillModeForwards
+        pathAnimation.isRemovedOnCompletion = false
+        
+        view.layer.add(pathAnimation, forKey: Constants.CAKeyframeAnimation.arcKey)
+    }
+    
+    func start(from startAngle: Float, to endAngle: Float, duration: CFTimeInterval = 2.0) {
+        let moveableViewPath = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle.cgFloat, endAngle: endAngle.cgFloat, clockwise: true).cgPath
         let pathAnimation = CAKeyframeAnimation(keyPath: Constants.CAKeyframeAnimation.positionKeyPath)
         
         pathAnimation.calculationMode = kCAAnimationPaced
@@ -123,7 +138,7 @@ class CircleView: UIView {
         
         context.addPath(path)
         
-        view.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
+        view.frame = CGRect(x: 0, y: 0, width: 17.5, height: 17.5)
         view.backgroundColor = color
         view.layer.cornerRadius = view.bounds.height / 2
         view.center.y = center.y
@@ -148,6 +163,8 @@ class CircleView: UIView {
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [unowned self] _ in
             self.dateFormatter.dateFormat = self.militaryTime ? DateFormat.military : DateFormat.meridiem
             self.timeLabel.text = self.dateFormatter.string(from: Date())
+            
+            
         }
         
         addSubview(timeLabel)
@@ -177,4 +194,19 @@ class CircleView: UIView {
         })
     }
     
+}
+
+extension CircleView: CAAnimationDelegate {
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true, block: { [unowned self] _ in
+            
+            // 1440 minutes in a day
+            let degree: Float  = 360.0 / 1440
+            
+            self.startAngle = self.endAngle
+            self.endAngle = self.endAngle + degree.radians
+        
+            self.start(from: self.startAngle, to: self.endAngle)
+        })
+    }
 }
