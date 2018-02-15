@@ -22,16 +22,22 @@ class CircleView: UIView {
             
             let difference = (sun.set).convertToTimeDecimal - (sun.rise).convertToTimeDecimal
             
-            endAngle = 3 * .pi + difference.angle
+            sunsetAngle = 3 * .pi + difference.angle
         }
     }
+    
+    /// The current time's timer.
+    var currentTimeTimer: Timer?
+    
+    /// The sun's timer.
+    var sunAngleTimer: Timer?
     
     /// The current time display.
     lazy var timeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isUserInteractionEnabled = true
-        label.font = UIFont.systemFont(ofSize: 32)
+        label.font = UIFont(name: "HelveticaNeue-Thin", size: 32)
         label.textColor = UIColor.white.withAlphaComponent(0.5)
         label.text = dateFormatter.string(from: Date())
         label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTimeTapped)))
@@ -58,7 +64,10 @@ class CircleView: UIView {
     private var startAngle: Float = .pi
     
     /// The ending location of the movable view (radians).
-    private var endAngle: Float = 3 * .pi
+    private var endAngle: Float = 0
+    
+    /// The ending location of the movable view (radians).
+    private var sunsetAngle: Float = 0
     
     /// The radius of the arc.
     private lazy var radius: CGFloat = 0.3 * min(bounds.width, bounds.height)
@@ -94,41 +103,6 @@ class CircleView: UIView {
         return imageView
     }()
     
-    /// Begins the animation
-    func start(_ duration: CFTimeInterval = 2.0) {
-        guard let sun = sun else { return }
-        
-        let rise = sun.rise.convertToTimeDecimal.angle
-        let set = Date().current.convertToTimeDecimal.angle
-        endAngle = startAngle + (set - rise)
-        
-        
-        let moveableViewPath = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle.cgFloat, endAngle: endAngle.cgFloat, clockwise: true).cgPath
-        let pathAnimation = CAKeyframeAnimation(keyPath: Constants.CAKeyframeAnimation.positionKeyPath)
-        
-        pathAnimation.delegate = self
-        pathAnimation.calculationMode = kCAAnimationPaced
-        pathAnimation.duration = duration
-        pathAnimation.path = moveableViewPath
-        pathAnimation.fillMode = kCAFillModeForwards
-        pathAnimation.isRemovedOnCompletion = false
-        
-        view.layer.add(pathAnimation, forKey: Constants.CAKeyframeAnimation.arcKey)
-    }
-    
-    func start(from startAngle: Float, to endAngle: Float, duration: CFTimeInterval = 2.0) {
-        let moveableViewPath = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle.cgFloat, endAngle: endAngle.cgFloat, clockwise: true).cgPath
-        let pathAnimation = CAKeyframeAnimation(keyPath: Constants.CAKeyframeAnimation.positionKeyPath)
-        
-        pathAnimation.calculationMode = kCAAnimationPaced
-        pathAnimation.duration = duration
-        pathAnimation.path = moveableViewPath
-        pathAnimation.fillMode = kCAFillModeForwards
-        pathAnimation.isRemovedOnCompletion = false
-        
-        view.layer.add(pathAnimation, forKey: Constants.CAKeyframeAnimation.arcKey)
-    }
-    
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         
@@ -150,7 +124,7 @@ class CircleView: UIView {
         sunriseImageView.center.x = view.center.x
         
         sunsetImageView.frame = CGRect(x: 0, y: 0, width: view.bounds.width * 2, height: view.bounds.width * 2)
-        sunsetImageView.center = CGPoint(x: center.x + radius * cos(endAngle.cgFloat), y: center.y + radius * sin(endAngle.cgFloat))
+        sunsetImageView.center = CGPoint(x: center.x + radius * cos(sunsetAngle.cgFloat), y: center.y + radius * sin(sunsetAngle.cgFloat))
         
         addSubview(view)
         addSubview(sunriseImageView)
@@ -160,11 +134,9 @@ class CircleView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [unowned self] _ in
+        currentTimeTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [unowned self] _ in
             self.dateFormatter.dateFormat = self.militaryTime ? DateFormat.military : DateFormat.meridiem
             self.timeLabel.text = self.dateFormatter.string(from: Date())
-            
-            
         }
         
         addSubview(timeLabel)
@@ -196,17 +168,59 @@ class CircleView: UIView {
     
 }
 
+extension CircleView {
+    /// Begins in animation
+    func start(_ duration: CFTimeInterval = 2.0) {
+        guard let sun = sun else { return }
+        
+        let rise = sun.rise.convertToTimeDecimal.angle
+        let current = Date().current.convertToTimeDecimal.angle
+        
+        endAngle = .pi + (current - rise)
+        
+        let moveableViewPath = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle.cgFloat, endAngle: endAngle.cgFloat + Float(0.01).radians.cgFloat, clockwise: true).cgPath
+        let pathAnimation = CAKeyframeAnimation(keyPath: Constants.CAKeyframeAnimation.positionKeyPath)
+        
+        pathAnimation.delegate = self
+        pathAnimation.calculationMode = kCAAnimationPaced
+        pathAnimation.duration = duration
+        pathAnimation.path = moveableViewPath
+        pathAnimation.fillMode = kCAFillModeForwards
+        pathAnimation.isRemovedOnCompletion = false
+        
+        view.layer.add(pathAnimation, forKey: Constants.CAKeyframeAnimation.arcKey)
+    }
+    
+    func start(from startAngle: Float, to endAngle: Float, duration: CFTimeInterval = 2.0) {
+        let moveableViewPath = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle.cgFloat, endAngle: endAngle.cgFloat, clockwise: true).cgPath
+        let pathAnimation = CAKeyframeAnimation(keyPath: Constants.CAKeyframeAnimation.positionKeyPath)
+        
+        pathAnimation.calculationMode = kCAAnimationPaced
+        pathAnimation.duration = duration
+        pathAnimation.path = moveableViewPath
+        pathAnimation.fillMode = kCAFillModeForwards
+        pathAnimation.isRemovedOnCompletion = false
+        
+        view.layer.add(pathAnimation, forKey: Constants.CAKeyframeAnimation.arcKey)
+    }
+}
+
 extension CircleView: CAAnimationDelegate {
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-        Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true, block: { [unowned self] _ in
-            
+        
+        self.startAngle = self.endAngle
+        
+        sunAngleTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true, block: { [unowned self] _ in
+
             // 1440 minutes in a day
             let degree: Float  = 360.0 / 1440
-            
+
             self.startAngle = self.endAngle
             self.endAngle = self.endAngle + degree.radians
-        
+
             self.start(from: self.startAngle, to: self.endAngle)
+            
+            
         })
     }
 }

@@ -43,6 +43,7 @@ class ViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.textColor = .white
+        label.font = UIFont(name: "HelveticaNeue-Thin", size: 16)
         return label
     }()
     
@@ -52,6 +53,7 @@ class ViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.textColor = .white
+        label.font = UIFont(name: "HelveticaNeue-Thin", size: 16)
         return label
     }()
     
@@ -123,7 +125,7 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
     
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -12),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -18),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             stackView.heightAnchor.constraint(equalTo: circleView.heightAnchor, multiplier: 0.15)
@@ -137,10 +139,16 @@ class ViewController: UIViewController {
     
     func setupObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleForegroundAppearance), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleBackgroundAppearance), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
     }
     
     @objc private func handleForegroundAppearance() {
         locationManager.startUpdatingLocation()
+    }
+    
+    @objc private func handleBackgroundAppearance() {
+        circleView.currentTimeTimer?.invalidate()
+        circleView.sunAngleTimer?.invalidate()
     }
     
     // MARK: Lifecycle
