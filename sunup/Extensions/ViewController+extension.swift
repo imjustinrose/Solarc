@@ -51,6 +51,7 @@ extension ViewController {
                             self.backgroundImageView.alpha = 1
                         }) {
                             _ in self.circleView.start()
+                            self.placeholderImageView.image = self.backgroundImageView.image
                         }
                     }
                 } catch {
