@@ -23,6 +23,8 @@ extension ViewController {
             let latitude = locationManager.location?.coordinate.latitude,
             let url = buildURL(latitude: latitude, longitude: longitude) else { return }
         
+        self.backgroundImageView.alpha = 0
+        
         URLSession.shared.dataTask(with: url) { [unowned self] (data, response, error) in
             if let data = data {
                 
