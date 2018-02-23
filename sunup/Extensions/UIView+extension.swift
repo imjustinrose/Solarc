@@ -28,6 +28,6 @@ extension UIView {
             self.leadingAnchor.constraint(equalTo: leading.anchor, constant: leading.constant),
             self.bottomAnchor.constraint(equalTo: bottom.anchor, constant: bottom.constant),
             self.trailingAnchor.constraint(equalTo: trailing.anchor, constant: trailing.constant)
-            ])
+        ])
     }
 }
