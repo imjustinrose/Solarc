@@ -29,4 +29,10 @@ struct Constants {
         static let longitude = "lon"
         static let appid = "appid"
     }
+    
+    struct MountainRangeOffset {
+        static let backRange: CGFloat = 0.15
+        static let middleRange: CGFloat = 0.23
+        static let frontRange: CGFloat = 0.33
+    }
 }

@@ -111,3 +111,31 @@ extension ViewController: CircleViewDelegate {
         })
     }
 }
+
+// MARK: - ScrollViewDelegate
+extension ViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y * 0.25
+        
+        let height = view.bounds.height
+        
+        let backRangeHeight = backRange.bounds.height
+        let backRangeOrigin = (height - backRangeHeight) + view.bounds.height * Constants.MountainRangeOffset.backRange
+        
+        let middleRangeHeight = backRange.bounds.height
+        let middleRangeOrigin = (height - middleRangeHeight) + view.bounds.height * Constants.MountainRangeOffset.middleRange
+        
+        let frontRangeHeight = backRange.bounds.height
+        let frontRangeOrigin = (height - frontRangeHeight) + view.bounds.height * Constants.MountainRangeOffset.frontRange
+        
+        let isScrollingDown = offsetY < 0
+        
+        UIView.animate(withDuration: 0.01) {
+            self.frontRange.frame.origin.y = (isScrollingDown ? -offsetY : -offsetY * 0.7) + frontRangeOrigin
+            self.middleRange.frame.origin.y = (isScrollingDown ? -offsetY : -offsetY) + middleRangeOrigin
+            self.backRange.frame.origin.y = (isScrollingDown ? -offsetY : -offsetY * 1.5) + backRangeOrigin
+        }
+        
+    }
+}

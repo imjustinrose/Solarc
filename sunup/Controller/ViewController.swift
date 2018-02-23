@@ -68,8 +68,15 @@ class ViewController: UIViewController {
         view.addSubview(sunriseImageView)
         view.addSubview(sunriseTimeLabel)
         
-        sunriseImageView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.centerYAnchor, trailing: view.trailingAnchor)
-        sunriseTimeLabel.anchor(top: view.centerYAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
+        sunriseImageView.anchor(top: (anchor: view.topAnchor, constant: 0),
+                                leading: (anchor: view.leadingAnchor, constant: 0),
+                                bottom: (anchor: view.centerYAnchor, constant: 0),
+                                trailing: (anchor: view.trailingAnchor, constant: 0))
+        
+        sunriseTimeLabel.anchor(top: (anchor: view.centerYAnchor, constant: 0),
+                                leading: (anchor: view.leadingAnchor, constant: 0),
+                                bottom: (anchor: view.bottomAnchor, constant: 0),
+                                trailing: (anchor: view.trailingAnchor, constant: 0))
         
         return view
     }()
@@ -85,8 +92,15 @@ class ViewController: UIViewController {
         view.addSubview(sunsetImageView)
         view.addSubview(sunsetTimeLabel)
         
-        sunsetImageView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.centerYAnchor, trailing: view.trailingAnchor)
-        sunsetTimeLabel.anchor(top: view.centerYAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
+        sunsetImageView.anchor(top: (anchor: view.topAnchor, constant: 0),
+                               leading: (anchor: view.leadingAnchor, constant: 0),
+                               bottom: (anchor: view.centerYAnchor, constant: 0),
+                               trailing: (anchor: view.trailingAnchor, constant: 0))
+        
+        sunsetTimeLabel.anchor(top: (anchor: view.centerYAnchor, constant: 0),
+                               leading: (anchor: view.leadingAnchor, constant: 0),
+                               bottom: (anchor: view.bottomAnchor, constant: 0),
+                               trailing: (anchor: view.trailingAnchor, constant: 0))
         
         return view
     }()
@@ -113,24 +127,42 @@ class ViewController: UIViewController {
         return circleView
     }()
     
-    func setupCircleView() {
-        view.addSubview(placeholderImageView)
-        view.addSubview(backgroundImageView)
-        view.addSubview(circleView)
-        view.addSubview(stackView)
-        
-        placeholderImageView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
-        backgroundImageView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
-        
-        NSLayoutConstraint.activate([
+    lazy var scrollView: UIScrollView = {
+        let sv = UIScrollView()
+        sv.translatesAutoresizingMaskIntoConstraints = false
+        sv.delegate = self
+        sv.showsVerticalScrollIndicator = false
+        sv.backgroundColor = .clear
+        return sv
+    }()
     
-            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -18),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            stackView.heightAnchor.constraint(equalTo: circleView.heightAnchor, multiplier: 0.15)
-        ])
-    }
+    let containerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        return view
+    }()
+    
+    let backRange: UIImageView = {
+        let imageView = UIImageView(image: #imageLiteral(resourceName: "back_range"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
+    
+    let middleRange: UIImageView = {
+        let imageView = UIImageView(image: #imageLiteral(resourceName: "middle_range"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
+    
+    let frontRange: UIImageView = {
+        let imageView = UIImageView(image: #imageLiteral(resourceName: "front_range"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
     
     func setupLocationManager() {
         locationManager.requestWhenInUseAuthorization()
@@ -156,6 +188,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         setupCircleView()
+        setupMountainRanges()
+        setupScrollView()
+        
         setupLocationManager()
         setupObserver()
         
@@ -167,5 +202,65 @@ class ViewController: UIViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+}
+
+// MARK: Interface Setup
+extension ViewController {
+    func setupMountainRanges() {
+        _ = [backRange, middleRange, frontRange].map { view.addSubview($0) }
+        
+        backRange.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5).isActive = true
+        backRange.anchor(leading: (anchor: view.leadingAnchor, constant: 0),
+                         bottom: (anchor: view.bottomAnchor, constant: view.bounds.height * Constants.MountainRangeOffset.backRange),
+                         trailing: (anchor: view.trailingAnchor, constant: 0))
+        
+        
+        middleRange.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5).isActive = true
+        middleRange.anchor(leading: (anchor: view.leadingAnchor, constant: 0),
+                           bottom: (anchor: view.bottomAnchor, constant: view.bounds.height * Constants.MountainRangeOffset.middleRange),
+                           trailing: (anchor: view.trailingAnchor, constant: 0))
+        
+        frontRange.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5).isActive = true
+        frontRange.anchor(leading: (anchor: view.leadingAnchor, constant: 0),
+                          bottom: (anchor: view.bottomAnchor, constant: view.bounds.height * Constants.MountainRangeOffset.frontRange),
+                          trailing: (anchor: view.trailingAnchor, constant: 0))
+    }
+    
+    func setupCircleView() {
+        view.addSubview(placeholderImageView)
+        view.addSubview(backgroundImageView)
+        view.addSubview(circleView)
+        view.addSubview(stackView)
+        
+        placeholderImageView.anchor(top: (anchor: view.topAnchor, constant: 0),
+                                    leading: (anchor: view.leadingAnchor, constant: 0),
+                                    bottom: (anchor: view.bottomAnchor, constant: 0),
+                                    trailing: (anchor: view.trailingAnchor, constant: 0))
+        
+        backgroundImageView.anchor(top: (anchor: view.topAnchor, constant: 0),
+                                   leading: (anchor: view.leadingAnchor, constant: 0),
+                                   bottom: (anchor: view.bottomAnchor, constant: 0),
+                                   trailing: (anchor: view.trailingAnchor, constant: 0))
+        
+        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        stackView.heightAnchor.constraint(equalTo: circleView.heightAnchor, multiplier: 0.15).isActive = true
+        stackView.anchor(leading: (anchor: view.leadingAnchor, constant: 0),
+                         bottom: (anchor: view.safeAreaLayoutGuide.bottomAnchor, constant: -18),
+                         trailing: (anchor: view.trailingAnchor, constant: 0))
+    }
+    
+    func setupScrollView() {
+        view.addSubview(scrollView)
+        scrollView.anchor(top: (anchor: view.centerYAnchor, constant: 0),
+                          leading: (anchor: view.leadingAnchor, constant: 0),
+                          bottom: (anchor: view.bottomAnchor, constant: 0),
+                          trailing: (anchor: view.trailingAnchor, constant: 0))
+        
+        scrollView.addSubview(containerView)
+        containerView.anchor(top: (anchor: scrollView.topAnchor, constant: 0),
+                             leading: (anchor: scrollView.leadingAnchor, constant: 0),
+                             bottom: (anchor: scrollView.bottomAnchor, constant: -(view.bounds.height / 2) - 10),
+                             trailing: (anchor: scrollView.trailingAnchor, constant: 0))
     }
 }
