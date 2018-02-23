@@ -179,7 +179,7 @@ class ViewController: UIViewController {
     }
     
     @objc private func handleBackgroundAppearance() {
-        circleView.currentTimeTimer?.invalidate()
+        // circleView.currentTimeTimer?.invalidate()
         circleView.sunAngleTimer?.invalidate()
     }
     
