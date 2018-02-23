@@ -43,12 +43,12 @@ extension ViewController {
                         self.backgroundImageView.image = UIImage(named: Date().getTimeOfDay(sunrise: sunrise, sunset: sunset).rawValue)
                         
                         self.circleView.setNeedsDisplay()
-                        self.sunriseTimeLabel.text = sunrise
-                        self.sunsetTimeLabel.text = sunset
+                        self.sunTimeView.sunriseTimeLabel.text = sunrise
+                        self.sunTimeView.sunsetTimeLabel.text = sunset
                         
                         UIView.animate(withDuration: 1.0, animations: {
-                            self.sunriseTimeLabel.alpha = 0.5
-                            self.sunsetTimeLabel.alpha = 0.5
+                            self.sunTimeView.sunriseTimeLabel.alpha = 0.5
+                            self.sunTimeView.sunsetTimeLabel.alpha = 0.5
                             self.circleView.sunsetImageView.alpha = 0.5
                             self.backgroundImageView.alpha = 1
                         }) {
@@ -94,20 +94,20 @@ extension ViewController: CLLocationManagerDelegate {
 extension ViewController: CircleViewDelegate {
     func didChangeTimeFormat(_ militaryTime: Bool) {
 
-        UIView.transition(with: self.sunsetTimeLabel,
+        UIView.transition(with: self.sunTimeView.sunsetTimeLabel,
                           duration: 0.5,
                           options: .transitionCrossDissolve,
                           animations: { [unowned self] in
 
-                            self.sunsetTimeLabel.text = militaryTime ? self.sunsetTimeLabel.text?.military : self.sunsetTimeLabel.text?.meridiem
+                            self.sunTimeView.sunsetTimeLabel.text = militaryTime ? self.sunTimeView.sunsetTimeLabel.text?.military : self.sunTimeView.sunsetTimeLabel.text?.meridiem
         })
 
-        UIView.transition(with: self.sunriseTimeLabel,
+        UIView.transition(with: self.sunTimeView.sunriseTimeLabel,
                           duration: 0.5,
                           options: .transitionCrossDissolve,
                           animations: { [unowned self] in
 
-                            self.sunriseTimeLabel.text = militaryTime ? self.sunriseTimeLabel.text?.military : self.sunriseTimeLabel.text?.meridiem
+                            self.sunTimeView.sunriseTimeLabel.text = militaryTime ? self.sunTimeView.sunriseTimeLabel.text?.military : self.sunTimeView.sunriseTimeLabel.text?.meridiem
         })
     }
 }
@@ -120,21 +120,21 @@ extension ViewController: UIScrollViewDelegate {
         
         let height = view.bounds.height
         
-        let backRangeHeight = backRange.bounds.height
+        let backRangeHeight = mountainRangeView.backRange.bounds.height
         let backRangeOrigin = (height - backRangeHeight) + view.bounds.height * Constants.MountainRangeOffset.backRange
         
-        let middleRangeHeight = backRange.bounds.height
+        let middleRangeHeight = mountainRangeView.middleRange.bounds.height
         let middleRangeOrigin = (height - middleRangeHeight) + view.bounds.height * Constants.MountainRangeOffset.middleRange
         
-        let frontRangeHeight = backRange.bounds.height
+        let frontRangeHeight = mountainRangeView.frontRange.bounds.height
         let frontRangeOrigin = (height - frontRangeHeight) + view.bounds.height * Constants.MountainRangeOffset.frontRange
         
         let isScrollingDown = offsetY < 0
         
         UIView.animate(withDuration: 0.01) {
-            self.frontRange.frame.origin.y = (isScrollingDown ? -offsetY : -offsetY * 0.7) + frontRangeOrigin
-            self.middleRange.frame.origin.y = (isScrollingDown ? -offsetY : -offsetY) + middleRangeOrigin
-            self.backRange.frame.origin.y = (isScrollingDown ? -offsetY : -offsetY * 1.5) + backRangeOrigin
+            self.mountainRangeView.frontRange.frame.origin.y = (isScrollingDown ? -offsetY : -offsetY * 0.7) + frontRangeOrigin
+            self.mountainRangeView.middleRange.frame.origin.y = (isScrollingDown ? -offsetY : -offsetY) + middleRangeOrigin
+            self.mountainRangeView.backRange.frame.origin.y = (isScrollingDown ? -offsetY : -offsetY * 1.5) + backRangeOrigin
         }
         
     }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7643D83B2040788D00167B22 /* SunTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7643D83A2040788D00167B22 /* SunTimeView.swift */; };
+		7643D83D2040808100167B22 /* MountainRangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7643D83C2040808100167B22 /* MountainRangeView.swift */; };
 		766A20DC202E59D4007141B1 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766A20DB202E59D4007141B1 /* Location.swift */; };
 		766A20DE202E87AD007141B1 /* ViewController+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766A20DD202E87AD007141B1 /* ViewController+extension.swift */; };
 		766A20E0202E8CCA007141B1 /* UIView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766A20DF202E8CCA007141B1 /* UIView+extension.swift */; };
@@ -35,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7643D83A2040788D00167B22 /* SunTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunTimeView.swift; sourceTree = "<group>"; };
+		7643D83C2040808100167B22 /* MountainRangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MountainRangeView.swift; sourceTree = "<group>"; };
 		766A20DB202E59D4007141B1 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		766A20DD202E87AD007141B1 /* ViewController+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+extension.swift"; sourceTree = "<group>"; };
 		766A20DF202E8CCA007141B1 /* UIView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+extension.swift"; sourceTree = "<group>"; };
@@ -88,6 +92,8 @@
 			isa = PBXGroup;
 			children = (
 				76C29B78202B9B8F004303BB /* CircleView.swift */,
+				7643D83A2040788D00167B22 /* SunTimeView.swift */,
+				7643D83C2040808100167B22 /* MountainRangeView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -265,6 +271,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				766A20DE202E87AD007141B1 /* ViewController+extension.swift in Sources */,
+				7643D83D2040808100167B22 /* MountainRangeView.swift in Sources */,
 				76C29B86202D3BE9004303BB /* TimeOfDay.swift in Sources */,
 				766A20DC202E59D4007141B1 /* Location.swift in Sources */,
 				76C29B79202B9B8F004303BB /* CircleView.swift in Sources */,
@@ -272,6 +279,7 @@
 				76C29B7D202BA188004303BB /* String+extension.swift in Sources */,
 				76C29B84202D3BD5004303BB /* DateFormat.swift in Sources */,
 				76C29B7F202BA1FF004303BB /* Sun.swift in Sources */,
+				7643D83B2040788D00167B22 /* SunTimeView.swift in Sources */,
 				76B84935202E1C4B00631EB3 /* Constants.swift in Sources */,
 				76C29B69202B9B2F004303BB /* ViewController.swift in Sources */,
 				76C29B7B202BA162004303BB /* Float+extension.swift in Sources */,
