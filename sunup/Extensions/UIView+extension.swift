@@ -10,24 +10,54 @@ import UIKit
 
 extension UIView {
     
+    func center(in view: UIView) {
+        centerHorizontally(in: view)
+        centerVertically(in: view)
+    }
+    
+    func centerHorizontally(in view: UIView) {
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+    }
+    
+    func centerVertically(in view: UIView) {
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
+    
     func anchor(top: (anchor: NSLayoutYAxisAnchor, constant: CGFloat), leading: (anchor: NSLayoutXAxisAnchor, constant: CGFloat), bottom: (anchor: NSLayoutYAxisAnchor, constant: CGFloat), trailing: (anchor: NSLayoutXAxisAnchor, constant: CGFloat)) {
         self.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            self.topAnchor.constraint(equalTo: top.anchor, constant: top.constant),
-            self.leadingAnchor.constraint(equalTo: leading.anchor, constant: leading.constant),
-            self.bottomAnchor.constraint(equalTo: bottom.anchor, constant: bottom.constant),
-            self.trailingAnchor.constraint(equalTo: trailing.anchor, constant: trailing.constant)
+            topAnchor.constraint(equalTo: top.anchor, constant: top.constant),
+            leadingAnchor.constraint(equalTo: leading.anchor, constant: leading.constant),
+            bottomAnchor.constraint(equalTo: bottom.anchor, constant: bottom.constant),
+            trailingAnchor.constraint(equalTo: trailing.anchor, constant: trailing.constant)
         ])
     }
     
     func anchor(leading: (anchor: NSLayoutXAxisAnchor, constant: CGFloat), bottom: (anchor: NSLayoutYAxisAnchor, constant: CGFloat), trailing: (anchor: NSLayoutXAxisAnchor, constant: CGFloat)) {
-        self.translatesAutoresizingMaskIntoConstraints = false
+        translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            self.leadingAnchor.constraint(equalTo: leading.anchor, constant: leading.constant),
-            self.bottomAnchor.constraint(equalTo: bottom.anchor, constant: bottom.constant),
-            self.trailingAnchor.constraint(equalTo: trailing.anchor, constant: trailing.constant)
+            leadingAnchor.constraint(equalTo: leading.anchor, constant: leading.constant),
+            bottomAnchor.constraint(equalTo: bottom.anchor, constant: bottom.constant),
+            trailingAnchor.constraint(equalTo: trailing.anchor, constant: trailing.constant)
+        ])
+    }
+    
+    func anchor(leading: (anchor: NSLayoutXAxisAnchor, constant: CGFloat), trailing: (anchor: NSLayoutXAxisAnchor, constant: CGFloat)) {
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            leadingAnchor.constraint(equalTo: leading.anchor, constant: leading.constant),
+            trailingAnchor.constraint(equalTo: trailing.anchor, constant: trailing.constant)
         ])
     }
 }
