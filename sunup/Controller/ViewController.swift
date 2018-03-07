@@ -41,6 +41,17 @@ class ViewController: UIViewController {
     }()
     
     // MARK: Interface Elements
+    let locationDisabledLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Please enable location services so we can determine when the sun rises and sets."
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        return label
+    }()
+    
     var placeholderImageView: UIImageView = {
         let imageView = UIImageView(image: #imageLiteral(resourceName: "sunrise_bg"))
         imageView.alpha = 1
@@ -64,6 +75,7 @@ class ViewController: UIViewController {
         setupCircleView()
         setupSunTimeView()
         setupMountainRangeView()
+        setupLocationDisabledLabel()
         setupLocationManager()
         setupObserver()
         
@@ -80,9 +92,24 @@ class ViewController: UIViewController {
 
 // MARK: Location Manager
 extension ViewController {
+    func checkLocationServicesStatus() {
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus() {
+            case .authorizedAlways, .authorizedWhenInUse:
+                locationManager.startUpdatingLocation()
+                locationDisabledLabel.isHidden = true
+                
+            case .denied, .notDetermined, .restricted:
+                locationDisabledLabel.isHidden = false
+            }
+        } else {
+            locationDisabledLabel.isHidden = false
+        }
+    }
+    
     func setupLocationManager() {
         locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
+        checkLocationServicesStatus()
     }
     
     func setupObserver() {
@@ -92,6 +119,7 @@ extension ViewController {
     
     @objc private func handleForegroundAppearance() {
         locationManager.startUpdatingLocation()
+        checkLocationServicesStatus()
     }
     
     @objc private func handleBackgroundAppearance() {
@@ -101,6 +129,15 @@ extension ViewController {
 
 // MARK: Interface Setup
 extension ViewController {
+    
+    func setupLocationDisabledLabel() {
+        locationDisabledLabel.isHidden = true
+        view.addSubview(locationDisabledLabel)
+        
+        locationDisabledLabel.centerVertically(in: view)
+        locationDisabledLabel.anchor(leading: (anchor: view.leadingAnchor, constant: 24),
+                                     trailing: (anchor: view.trailingAnchor, constant: -24))
+    }
     
     func setupSunTimeView() {
         view.addSubview(sunTimeView)
