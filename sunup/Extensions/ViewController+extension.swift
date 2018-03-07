@@ -132,9 +132,9 @@ extension ViewController: UIScrollViewDelegate {
         let isScrollingDown = offsetY < 0
         
         UIView.animate(withDuration: 0.01) {
-            self.mountainRangeView.frontRange.frame.origin.y = (isScrollingDown ? -offsetY : -offsetY * 0.7) + frontRangeOrigin
-            self.mountainRangeView.middleRange.frame.origin.y = (isScrollingDown ? -offsetY : -offsetY) + middleRangeOrigin
-            self.mountainRangeView.backRange.frame.origin.y = (isScrollingDown ? -offsetY : -offsetY * 1.5) + backRangeOrigin
+            self.mountainRangeView.frontRange.frame.origin.y = (isScrollingDown ? -offsetY : -offsetY * 1.3) + frontRangeOrigin
+            self.mountainRangeView.middleRange.frame.origin.y = (isScrollingDown ? -offsetY : -offsetY * 0.9) + middleRangeOrigin
+            self.mountainRangeView.backRange.frame.origin.y = (isScrollingDown ? -offsetY : -offsetY * 0.5) + backRangeOrigin
         }
         
     }
