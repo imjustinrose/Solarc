@@ -98,7 +98,6 @@ extension ViewController {
             case .authorizedAlways, .authorizedWhenInUse:
                 locationManager.startUpdatingLocation()
                 locationDisabledLabel.isHidden = true
-                
             case .denied, .notDetermined, .restricted:
                 locationDisabledLabel.isHidden = false
             }
@@ -124,6 +123,10 @@ extension ViewController {
     
     @objc private func handleBackgroundAppearance() {
         circleView.sunAngleTimer?.invalidate()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        checkLocationServicesStatus()
     }
 }
 
