@@ -111,7 +111,6 @@
 		76C29B5A202B9B2F004303BB = {
 			isa = PBXGroup;
 			children = (
-				76BFC6EC204F8E8700BEC1B1 /* LaunchScreen.storyboard */,
 				76C29B65202B9B2F004303BB /* sunup */,
 				76C29BFC202D4C00004303BB /* sunupTests */,
 				76C29B64202B9B2F004303BB /* Products */,
@@ -130,6 +129,7 @@
 		76C29B65202B9B2F004303BB /* sunup */ = {
 			isa = PBXGroup;
 			children = (
+				76BFC6EC204F8E8700BEC1B1 /* LaunchScreen.storyboard */,
 				76D090F5202D5B98000E6888 /* Helpers */,
 				76C29B82202BA2E0004303BB /* Extensions */,
 				768387D0202E9D2C00C1DBED /* Model */,
