@@ -11,6 +11,26 @@ struct System: Codable {
     let sunset: Int64
 }
 
-struct Location: Codable {
+struct Main: Codable {
+    let temp: Double
+    let pressure: Double
+    let humidity: Double
+    let temp_min: Double
+    let temp_max: Double
+}
+
+struct WeatherDescription: Codable {
+    let main: String
+    let description: String
+}
+
+struct Wind: Codable {
+    let speed: Double
+}
+
+struct Weather: Codable {
+    let weather: [WeatherDescription]
+    let main: Main
+    let wind: Wind
     let sys: System
 }
