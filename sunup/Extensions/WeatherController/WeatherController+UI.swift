@@ -26,8 +26,9 @@ extension WeatherController {
         locationDisabledLabel.isHidden = true
         view.addSubview(locationDisabledLabel)
         
-        locationDisabledLabel.centerVertically(in: view)
-        locationDisabledLabel.anchor(leading: (anchor: view.leadingAnchor, constant: 24),
+        locationDisabledLabel.centerHorizontally(in: view)
+        locationDisabledLabel.anchor(top: (anchor: view.topAnchor, constant: view.bounds.height * 0.1),
+                                     leading: (anchor: view.leadingAnchor, constant: 24),
                                      trailing: (anchor: view.trailingAnchor, constant: -24))
     }
     

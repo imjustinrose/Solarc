@@ -41,7 +41,7 @@ class WeatherController: UIViewController {
     let locationDisabledLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Please enable location services so we can determine when the sun rises and sets."
+        label.text = "Please enable location services so we can determine the weather and sun data in your area."
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         label.numberOfLines = 0
