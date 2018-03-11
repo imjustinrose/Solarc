@@ -39,6 +39,17 @@ class CircleView: UIView {
         return label
     }()
     
+    /// The current weather description.
+    lazy var descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "HelveticaNeue-Thin", size: 22)
+        label.text = "Partly cloudy"
+        label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5)
+        label.alpha = 0
+        return label
+    }()
+    
     /// The date formatter for the current time.
     private var dateFormatter: DateFormatter = {
         let df = DateFormatter()
@@ -132,6 +143,10 @@ class CircleView: UIView {
         addSubview(temperatureLabel)
         temperatureLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         temperatureLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        
+        addSubview(descriptionLabel)
+        descriptionLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        descriptionLabel.topAnchor.constraint(equalTo: temperatureLabel.bottomAnchor, constant: 16).isActive = true
         
         backgroundColor = .clear
     }

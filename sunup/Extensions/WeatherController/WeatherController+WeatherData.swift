@@ -71,11 +71,13 @@ extension WeatherController {
                         
                         self.circleView.setNeedsDisplay()
                         self.circleView.temperatureLabel.text = "\(String(format: "%.1f", json.main.temp.kelvinToFahrenheit)) °F"
+                        self.circleView.descriptionLabel.text = json.weather.first?.main
                         self.sunTimeView.sunriseTimeLabel.text = sunrise
                         self.sunTimeView.sunsetTimeLabel.text = sunset
                         
                         UIView.animate(withDuration: 1.0, animations: {
                             self.circleView.temperatureLabel.alpha = 1
+                            self.circleView.descriptionLabel.alpha = 1
                             self.sunTimeView.sunriseTimeLabel.alpha = 1
                             self.sunTimeView.sunsetTimeLabel.alpha = 1
                             self.circleView.sunsetImageView.alpha = 0.5
