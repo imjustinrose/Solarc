@@ -43,15 +43,15 @@ extension WeatherController {
                                             switch buttonIndex {
                                             case -1: self.weatherDataView.textLabel.text = ""
                                             case 0:
-                                                let min = String(format: "%.2f", json.main.temp_min.kelvinToFahrenheit)
-                                                let max = String(format: "%.2f", json.main.temp_max.kelvinToFahrenheit)
+                                                let min = String(format: "%.1f", json.main.temp_min.kelvinToFahrenheit)
+                                                let max = String(format: "%.1f", json.main.temp_max.kelvinToFahrenheit)
                                                 
                                                 let mutableString = NSMutableAttributedString(string: "\(min) °F    \(max) °F")
                                                 mutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5), range: NSRange(location: 0, length: 8))
                                                 
                                                 self.weatherDataView.textLabel.attributedText = mutableString
                                             case 1: self.weatherDataView.textLabel.text = "\(Int(json.main.humidity))%"
-                                            case 2: self.weatherDataView.textLabel.text = "\(String(format: "%.2f", json.wind.speed.metersPerSecondToMPH)) mph"
+                                            case 2: self.weatherDataView.textLabel.text = "\(String(format: "%.1f", json.wind.speed.metersPerSecondToMPH)) mph"
                                             case 3: self.weatherDataView.textLabel.text = "\(Int(json.main.pressure)) hPa"
                                             default: fatalError("Unknown button index attempted to be accessed.")
                                             }
@@ -70,7 +70,7 @@ extension WeatherController {
                         self.backgroundImageView.image = UIImage(named: Date().getTimeOfDay(sunrise: sunrise, sunset: sunset).rawValue)
                         
                         self.circleView.setNeedsDisplay()
-                        self.circleView.temperatureLabel.text = "\(String(format: "%.2f", json.main.temp_min.kelvinToFahrenheit)) °F"
+                        self.circleView.temperatureLabel.text = "\(String(format: "%.1f", json.main.temp.kelvinToFahrenheit)) °F"
                         self.sunTimeView.sunriseTimeLabel.text = sunrise
                         self.sunTimeView.sunsetTimeLabel.text = sunset
                         
