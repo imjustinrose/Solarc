@@ -26,21 +26,16 @@ class CircleView: UIView {
         }
     }
     
-    /// The current time's timer.
-    var currentTimeTimer: Timer?
-    
     /// The sun's timer.
     var sunAngleTimer: Timer?
     
-    /// The current time display.
-    lazy var timeLabel: UILabel = {
+    /// The current temperature display.
+    lazy var temperatureLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.isUserInteractionEnabled = true
         label.font = UIFont(name: "HelveticaNeue-Thin", size: 32)
-        label.textColor = UIColor.white.withAlphaComponent(0.5)
-        label.text = dateFormatter.string(from: Date())
-        label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTimeTapped)))
+        label.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        label.alpha = 0
         return label
     }()
     
@@ -134,36 +129,15 @@ class CircleView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        currentTimeTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [unowned self] _ in
-            self.dateFormatter.dateFormat = self.militaryTime ? DateFormat.military : DateFormat.meridiem
-            self.timeLabel.text = self.dateFormatter.string(from: Date())
-        }
-        
-        addSubview(timeLabel)
-        timeLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        timeLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        addSubview(temperatureLabel)
+        temperatureLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        temperatureLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         backgroundColor = .clear
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    @objc private func handleTimeTapped() {
-        militaryTime = !militaryTime
-        UserDefaults.standard.set(militaryTime, forKey: Constants.isMilitaryTime)
-        
-        dateFormatter.dateFormat = militaryTime ? DateFormat.military : DateFormat.meridiem
-        
-        UIView.transition(with: timeLabel,
-                          duration: 0.5,
-                          options: .transitionCrossDissolve,
-                          animations: { [unowned self] in
-                            
-                            self.timeLabel.text = self.dateFormatter.string(from: Date())
-                            self.delegate?.didChangeTimeFormat(self.militaryTime)
-        })
     }
     
 }

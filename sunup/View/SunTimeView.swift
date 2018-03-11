@@ -34,7 +34,7 @@ class SunTimeView: UIView {
         let view = UIView()
         
         let sunriseImageView = UIImageView(image: #imageLiteral(resourceName: "sunrise_cloud"))
-        sunriseImageView.alpha = 0.5
+        sunriseImageView.alpha = 1
         sunriseImageView.translatesAutoresizingMaskIntoConstraints = false
         sunriseImageView.contentMode = .scaleAspectFit
         
@@ -58,7 +58,7 @@ class SunTimeView: UIView {
         let view = UIView()
         
         let sunsetImageView = UIImageView(image: #imageLiteral(resourceName: "sunset_cloud"))
-        sunsetImageView.alpha = 0.5
+        sunsetImageView.alpha = 1
         sunsetImageView.translatesAutoresizingMaskIntoConstraints = false
         sunsetImageView.contentMode = .scaleAspectFit
         
