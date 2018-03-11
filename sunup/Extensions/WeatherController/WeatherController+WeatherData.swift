@@ -35,6 +35,8 @@ extension WeatherController {
                     
                     self.weatherDataView.onSelection = { buttonIndex in
                         
+                        let maxCharacters = 20
+                        
                         UIView.transition(with: self.weatherDataView.textLabel,
                                           duration: 0.5,
                                           options: .transitionCrossDissolve,
@@ -46,13 +48,27 @@ extension WeatherController {
                                                 let min = String(format: "%.1f", json.main.temp_min.kelvinToFahrenheit)
                                                 let max = String(format: "%.1f", json.main.temp_max.kelvinToFahrenheit)
                                                 
-                                                let mutableString = NSMutableAttributedString(string: "\(min) °F    \(max) °F")
+                                                let mutableString = NSMutableAttributedString(string: "\(min) °F   \(max) °F")
                                                 mutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5), range: NSRange(location: 0, length: 8))
                                                 
                                                 self.weatherDataView.textLabel.attributedText = mutableString
-                                            case 1: self.weatherDataView.textLabel.text = "\(Int(json.main.humidity))%"
-                                            case 2: self.weatherDataView.textLabel.text = "\(String(format: "%.1f", json.wind.speed.metersPerSecondToMPH)) mph"
-                                            case 3: self.weatherDataView.textLabel.text = "\(Int(json.main.pressure)) hPa"
+                                            case 1:
+                                                
+                                                var humidity = "\(Int(json.main.humidity))%"
+                                                humidity.append(String(repeating: " ", count: maxCharacters - humidity.count))
+                                                
+                                                self.weatherDataView.textLabel.text = humidity
+                                            case 2:
+                                                
+                                                var windSpeed = "\(String(format: "%.1f", json.wind.speed.metersPerSecondToMPH)) mph"
+                                                windSpeed.append(String(repeating: " ", count: maxCharacters - windSpeed.count))
+                                                
+                                                self.weatherDataView.textLabel.text = windSpeed
+                                            case 3:
+                                                
+                                                var pressure = "\(Int(json.main.pressure)) hPa"
+                                                pressure.append(String(repeating: " ", count: maxCharacters - pressure.count))
+                                                self.weatherDataView.textLabel.text = pressure
                                             default: fatalError("Unknown button index attempted to be accessed.")
                                             }
                         })
@@ -71,13 +87,11 @@ extension WeatherController {
                         
                         self.circleView.setNeedsDisplay()
                         self.circleView.temperatureLabel.text = "\(String(format: "%.1f", json.main.temp.kelvinToFahrenheit)) °F"
-                        self.circleView.descriptionLabel.text = json.weather.first?.main
                         self.sunTimeView.sunriseTimeLabel.text = sunrise
                         self.sunTimeView.sunsetTimeLabel.text = sunset
                         
                         UIView.animate(withDuration: 1.0, animations: {
                             self.circleView.temperatureLabel.alpha = 1
-                            self.circleView.descriptionLabel.alpha = 1
                             self.sunTimeView.sunriseTimeLabel.alpha = 1
                             self.sunTimeView.sunsetTimeLabel.alpha = 1
                             self.circleView.sunsetImageView.alpha = 0.5

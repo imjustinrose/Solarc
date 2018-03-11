@@ -57,7 +57,8 @@ class WeatherDataView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         label.textAlignment = .center
-        label.font = UIFont(name: "HelveticaNeue-Thin", size: 24)
+        label.font = UIFont(name: "HelveticaNeue-Thin", size: 42)
+        label.scaleWithDefaultFont(of: 42, minimumFont: 10, baselineAdjustment: .alignCenters)
         return label
     }()
     
@@ -71,6 +72,12 @@ class WeatherDataView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
         
         setupStackView()
         setupTextLabel()
@@ -92,10 +99,9 @@ class WeatherDataView: UIView {
     func setupTextLabel() {
         addSubview(textLabel)
         
-        textLabel.anchor(top: (anchor: stackView.bottomAnchor, constant: 0),
-                         leading: (anchor: leadingAnchor, constant: 0),
-                         bottom: (anchor: bottomAnchor, constant: 0),
-                         trailing: (anchor: trailingAnchor, constant: 0))
+        textLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.7).isActive = true
+        textLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        textLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: frame.height * 0.25).isActive = true
     }
     
     // MARK: - Actions

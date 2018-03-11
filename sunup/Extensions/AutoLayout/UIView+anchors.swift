@@ -88,4 +88,13 @@ extension UIView {
             leadingAnchor.constraint(equalTo: leading.anchor, constant: leading.constant)
         ])
     }
+    
+    func anchor(top: (anchor: NSLayoutYAxisAnchor, constant: CGFloat), bottom: (anchor: NSLayoutYAxisAnchor, constant: CGFloat)) {
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            topAnchor.constraint(equalTo: top.anchor, constant: top.constant),
+            bottomAnchor.constraint(equalTo: bottom.anchor, constant: bottom.constant)
+        ])
+    }
 }

@@ -33,20 +33,11 @@ class CircleView: UIView {
     lazy var temperatureLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "HelveticaNeue-Thin", size: 32)
+        label.font = UIFont(name: "HelveticaNeue-Thin", size: 56)
         label.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         label.alpha = 0
-        return label
-    }()
-    
-    /// The current weather description.
-    lazy var descriptionLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "HelveticaNeue-Thin", size: 22)
-        label.text = "Partly cloudy"
-        label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5)
-        label.alpha = 0
+        label.scaleWithDefaultFont(of: 56, minimumFont: 10, baselineAdjustment: .alignCenters)
+        label.textAlignment = .center
         return label
     }()
     
@@ -141,12 +132,9 @@ class CircleView: UIView {
         super.init(frame: frame)
         
         addSubview(temperatureLabel)
+        temperatureLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.3).isActive = true
         temperatureLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         temperatureLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        
-        addSubview(descriptionLabel)
-        descriptionLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        descriptionLabel.topAnchor.constraint(equalTo: temperatureLabel.bottomAnchor, constant: 16).isActive = true
         
         backgroundColor = .clear
     }

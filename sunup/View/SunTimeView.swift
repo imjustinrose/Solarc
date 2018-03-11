@@ -16,7 +16,8 @@ class SunTimeView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.textColor = .white
-        label.font = UIFont(name: "HelveticaNeue-Thin", size: 16)
+        label.font = UIFont(name: "HelveticaNeue-Thin", size: 32)
+        label.scaleWithDefaultFont(of: 32, minimumFont: 10, baselineAdjustment: .alignCenters)
         return label
     }()
     
@@ -26,7 +27,8 @@ class SunTimeView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.textColor = .white
-        label.font = UIFont(name: "HelveticaNeue-Thin", size: 16)
+        label.font = UIFont(name: "HelveticaNeue-Thin", size: 32)
+        label.scaleWithDefaultFont(of: 32, minimumFont: 10, baselineAdjustment: .alignCenters)
         return label
     }()
     
@@ -46,10 +48,10 @@ class SunTimeView: UIView {
                                 bottom: (anchor: view.centerYAnchor, constant: 0),
                                 trailing: (anchor: view.trailingAnchor, constant: 0))
         
+        sunriseTimeLabel.widthAnchor.constraint(equalTo: sunriseImageView.widthAnchor, multiplier: 0.3).isActive = true
+        sunriseTimeLabel.centerHorizontally(in: view)
         sunriseTimeLabel.anchor(top: (anchor: view.centerYAnchor, constant: 0),
-                                leading: (anchor: view.leadingAnchor, constant: 0),
-                                bottom: (anchor: view.bottomAnchor, constant: 0),
-                                trailing: (anchor: view.trailingAnchor, constant: 0))
+                                bottom: (anchor: view.bottomAnchor, constant: 0))
         
         return view
     }()
@@ -70,10 +72,10 @@ class SunTimeView: UIView {
                                bottom: (anchor: view.centerYAnchor, constant: 0),
                                trailing: (anchor: view.trailingAnchor, constant: 0))
         
+        sunsetTimeLabel.widthAnchor.constraint(equalTo: sunsetImageView.widthAnchor, multiplier: 0.3).isActive = true
+        sunsetTimeLabel.centerHorizontally(in: view)
         sunsetTimeLabel.anchor(top: (anchor: view.centerYAnchor, constant: 0),
-                               leading: (anchor: view.leadingAnchor, constant: 0),
-                               bottom: (anchor: view.bottomAnchor, constant: 0),
-                               trailing: (anchor: view.trailingAnchor, constant: 0))
+                                bottom: (anchor: view.bottomAnchor, constant: 0))
         
         return view
     }()
