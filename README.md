@@ -1,5 +1,5 @@
 <h1 align="center">
-  Sunup
+  Solarc
   <br>
 </h1>
 
