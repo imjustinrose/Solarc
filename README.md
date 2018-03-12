@@ -7,5 +7,5 @@
 
 <br><br>
         
-![](img/no_location.png)   |  ![](img/location.png)
-:-------------------------:|:-------------------------:
+![](img/sunrise_iphone.png)  |  ![](img/morning_iphone.png) | ![](img/sunset_iphone.png)
+:-------------------------:|:-------------------------:|:-------------------------:
